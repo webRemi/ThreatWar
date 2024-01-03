@@ -6,9 +6,10 @@ SDL_Texture *loadImage(const char path[], SDL_Renderer *renderer);
 int main(int argc, char *argv[]) {
 	SDL_Window *window = NULL;
 	SDL_Renderer *renderer = NULL;
-	SDL_Color blue = {0, 0, 0, 1};
+	SDL_Color black = {255, 255, 255, 1};
 	SDL_Texture *image = NULL;
-		
+	SDL_Texture *malware = NULL;
+
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
 		goto Quit;
 	
@@ -22,19 +23,26 @@ int main(int argc, char *argv[]) {
 	if (renderer == NULL)
 		goto Quit;
 
-	if (SDL_SetRenderDrawColor(renderer, blue.r, blue.g, blue.b, blue.a) != 0) 
+	if (SDL_SetRenderDrawColor(renderer, black.r, black.g, black.b, black.a) != 0) 
 		goto Quit;
 
 	if (SDL_RenderClear(renderer) != 0) 
 		goto Quit;
 
 	image = loadImage("world.bmp", renderer);
+	malware = loadImage("malware.bmp", renderer);
 
 	if (image == NULL)
+		goto Quit;
+	
+	if (malware == NULL)
 		goto Quit;
 
 	SDL_Rect dstRect = {0, 0, 1920, 1080}; 
     SDL_RenderCopy(renderer, image, NULL, &dstRect);
+	
+	SDL_Rect dstRect2 = {400, 300, 50, 50};
+	SDL_RenderCopy(renderer, malware, NULL, &dstRect2);
 
 	SDL_RenderPresent(renderer);
 	SDL_Delay(3000);
