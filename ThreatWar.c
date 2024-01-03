@@ -41,10 +41,18 @@ int main(int argc, char *argv[]) {
 	SDL_Rect dstRect = {0, 0, 1920, 1080}; 
     SDL_RenderCopy(renderer, image, NULL, &dstRect);
 	
-	SDL_Rect dstRect2 = {400, 300, 50, 50};
-	SDL_RenderCopy(renderer, malware, NULL, &dstRect2);
-
-	SDL_RenderPresent(renderer);
+	int x = 400, y = 300, w = 50, h = 50;
+	
+	//USA attacking italy
+	while (x != 1000) {
+		SDL_Rect dstRect2 = {x, y, w, h};
+		SDL_RenderCopy(renderer, malware, NULL, &dstRect2);
+		x++;
+		SDL_RenderPresent(renderer);
+		SDL_Delay(10);
+	}
+	
+	//SDL_RenderPresent(renderer);
 	SDL_Delay(3000);
 	
 	SDL_DestroyRenderer(renderer);
