@@ -10,10 +10,11 @@ int main(int argc, char *argv[]) {
 	SDL_Renderer *renderer = NULL;
 	SDL_Color black = {255, 255, 255, 1};
 	SDL_Texture *image = NULL;
-	SDL_Texture *line = NULL;
+	SDL_Texture *point = NULL;
 	SDL_Texture *malware = NULL;
 	SDL_Color text_color = {0, 0, 0, 1};
 	SDL_Texture *comment = NULL;
+	SDL_Texture *city = NULL;
 
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
 		goto Quit;
@@ -38,9 +39,10 @@ int main(int argc, char *argv[]) {
 		goto Quit;
 	
 	image = loadImage("world.bmp", renderer);
-	line = loadImage("line.bmp", renderer);
+	point = loadImage("point.bmp", renderer);
 	malware = loadImage("malware.bmp", renderer);
-	comment = loadText("Backdoored server", "cyber.ttf", 48, text_color, renderer);
+	comment = loadText("Backdoored server", "cyber.ttf", 20, text_color, renderer);
+	city = loadText("United States -> Italy", "cyber.ttf", 20, text_color, renderer);
 
 	if (image == NULL)
 		goto Quit;
@@ -54,29 +56,52 @@ int main(int argc, char *argv[]) {
 	SDL_Rect dstRect = {0, 0, 1920, 1080}; 
     SDL_RenderCopy(renderer, image, NULL, &dstRect);
 	
-	int x = 390, y = 300, w = 50, h = 50;
+	int x = 400, y = 300, w = 5, h = 5;
 	
+	/*SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+	int gridSpacing = 40;
+
+	for (int x = 0; x <= 1920; x += gridSpacing) {
+        SDL_RenderDrawLine(renderer, x, 0, x, 1080);
+    }
+
+    // Draw horizontal lines
+    for (int y = 0; y <= 1080; y += gridSpacing) {
+        SDL_RenderDrawLine(renderer, 0, y, 1920, y);
+    }*/
+
 	//USA attacking italy
 	while (x != 1000) {
 		SDL_Rect dstRect2 = {x, y, w, h};
-		SDL_RenderCopy(renderer, line, NULL, &dstRect2);
-		x++;
-		SDL_RenderPresent(renderer);
-		SDL_Delay(10);
+		SDL_RenderCopy(renderer, point, NULL, &dstRect2);
+		
 		SDL_Rect dstRect3 = {10, 700, 50, 50};
 		SDL_RenderCopy(renderer, malware, NULL, &dstRect3);
-		SDL_Rect dstRect4 = {70, 700, 700, 48};
+		
+		SDL_Rect dstRect4 = {70, 700, 200, 20};
 		SDL_RenderCopy(renderer, comment, NULL, &dstRect4);
+		
+		SDL_Rect dstRect5 = {70, 730, 200, 20};
+		SDL_RenderCopy(renderer, city, NULL, &dstRect5);
+		
+		SDL_RenderPresent(renderer);
+		
 		SDL_Delay(10);
-		comment = loadText("United States -> Italy", "cyber.ttf", 48, text_color, renderer);
-		SDL_Rect dstRect5 = {70, 770, 700, 48};
-		SDL_RenderCopy(renderer, comment, NULL, &dstRect5);
-
+		
+		x += 2;
 	}
 
+	SDL_Rect dstRect6 = {1000, 275, 50, 50};
+	SDL_RenderCopy(renderer, malware, NULL, &dstRect6);
 	
-	//SDL_RenderPresent(renderer);
+	SDL_RenderPresent(renderer);
 	SDL_Delay(1000);
+	
+	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	SDL_RenderFillRect(renderer, &dstRect);
+	SDL_RenderCopy(renderer, image, NULL, &dstRect);
+	SDL_RenderPresent(renderer);
+	SDL_Delay(3000);
 	
 	SDL_DestroyRenderer(renderer);
 	SDL_DestroyWindow(window);
